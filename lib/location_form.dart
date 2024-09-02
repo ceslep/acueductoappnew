@@ -13,7 +13,13 @@ class LocationForm extends StatefulWidget {
 }
 
 class LocationFormState extends State<LocationForm> {
+  final TextEditingController _coordinatesController = TextEditingController();
   final TextEditingController _farmNameController = TextEditingController();
+  final TextEditingController _ownerIdController = TextEditingController();
+  final TextEditingController _ownerNameController = TextEditingController();
+  final TextEditingController _ownerTelephoneController =
+      TextEditingController();
+  final TextEditingController _observationsController = TextEditingController();
   String coordinates = '';
   String _siteType = '';
   String _siteTarife = '';
@@ -23,13 +29,22 @@ class LocationFormState extends State<LocationForm> {
   String _ownerTelephone = '';
   String _observations = '';
 
+  TextEditingController get coordinatesController => _coordinatesController;
+  String get siteType => _siteType;
+  String get siteTarife => _siteTarife;
   TextEditingController get farmNameController => _farmNameController;
+  TextEditingController get ownerIdController => _ownerIdController;
+  TextEditingController get ownerNameController => _ownerNameController;
+  TextEditingController get ownerTelephoneController =>
+      _ownerTelephoneController;
+  TextEditingController get observationsController => _observationsController;
 
   // Método para obtener las coordenadas
 
   Future<void> _getCurrentLocation() async {
     // Verifica y solicita permisos de ubicación si es necesario
     LocationPermission permission = await Geolocator.checkPermission();
+    print(permission);
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
@@ -44,8 +59,11 @@ class LocationFormState extends State<LocationForm> {
     // Obtiene la ubicación actual
     Position position = await Geolocator.getCurrentPosition();
 
+    print(position);
+
     setState(() {
-      coordinates = "Lat.: ${position.latitude}, Long.: ${position.longitude}";
+      _coordinatesController.text =
+          "Lat.: ${position.latitude}, Long.: ${position.longitude}";
     });
   }
 
@@ -61,13 +79,14 @@ class LocationFormState extends State<LocationForm> {
             children: <Widget>[
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Coordenadas'),
-                controller: TextEditingController(text: coordinates),
+                controller: _coordinatesController,
                 readOnly: true,
               ),
               const SizedBox(height: 10),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
+                    print('8');
                     _getCurrentLocation();
                   },
                   child: const Text('Obtener Coordenadas'),
@@ -99,7 +118,7 @@ class LocationFormState extends State<LocationForm> {
                     _siteType = value!;
                   });
                 },
-                decoration: const InputDecoration(labelText: 'Tipo de tarifa'),
+                decoration: const InputDecoration(labelText: 'Tipo de Sitio'),
               ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
@@ -127,7 +146,7 @@ class LocationFormState extends State<LocationForm> {
                     _siteTarife = value!;
                   });
                 },
-                decoration: const InputDecoration(labelText: 'Tipo de Sitio'),
+                decoration: const InputDecoration(labelText: 'Tipo de tarifa'),
               ),
               TextFormField(
                 controller: _farmNameController,
@@ -138,6 +157,7 @@ class LocationFormState extends State<LocationForm> {
                 },
               ),
               TextFormField(
+                controller: _ownerIdController,
                 keyboardType: const TextInputType.numberWithOptions(
                     signed: false, decimal: false),
                 decoration: const InputDecoration(
@@ -147,6 +167,7 @@ class LocationFormState extends State<LocationForm> {
                 },
               ),
               TextFormField(
+                controller: _ownerNameController,
                 decoration:
                     const InputDecoration(labelText: 'Nombre del Propietario'),
                 onChanged: (value) {
@@ -154,6 +175,7 @@ class LocationFormState extends State<LocationForm> {
                 },
               ),
               TextFormField(
+                controller: _ownerTelephoneController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
                 onChanged: (value) {
@@ -161,6 +183,7 @@ class LocationFormState extends State<LocationForm> {
                 },
               ),
               TextFormField(
+                controller: _observationsController,
                 decoration: const InputDecoration(labelText: 'Observaciones'),
                 onChanged: (value) {
                   _observations = value;

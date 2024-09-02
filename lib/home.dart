@@ -32,10 +32,16 @@ class _HomeState extends State<Home> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 // Acceder al valor del farmNameController
-                final farmName =
-                    _locationFormKey.currentState?.farmNameController.text;
-                asousuario.farmName = farmName;
-                print(asousuario.farmName);
+                final state = _locationFormKey.currentState!;
+                asousuario.coordinates = state.coordinatesController.text;
+                asousuario.siteType = state.siteType;
+                asousuario.siteTarife = state.siteTarife;
+                asousuario.farmName = state.farmNameController.text;
+                asousuario.ownerId = state.ownerIdController.text;
+                asousuario.ownerName = state.ownerNameController.text;
+                asousuario.ownerTelephone = state.ownerTelephoneController.text;
+                asousuario.observations = state.observationsController.text;
+                asousuario.iterarCampos();
               }
             },
             icon: const Icon(

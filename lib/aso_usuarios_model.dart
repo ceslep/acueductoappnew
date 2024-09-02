@@ -2,6 +2,8 @@
 //
 //     final asoUsuarios = asoUsuariosFromJson(jsonString);
 
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 AsoUsuarios asoUsuariosFromJson(String str) =>
@@ -15,7 +17,7 @@ class AsoUsuarios {
   String? siteTarife;
   String? farmName;
   String? ownerId;
-  String? ownername;
+  String? ownerName;
   String? ownerTelephone;
   String? observations;
 
@@ -25,7 +27,7 @@ class AsoUsuarios {
     this.siteTarife,
     this.farmName,
     this.ownerId,
-    this.ownername,
+    this.ownerName,
     this.ownerTelephone,
     this.observations,
   });
@@ -36,7 +38,7 @@ class AsoUsuarios {
         siteTarife: json["siteTarife"],
         farmName: json["farmName"],
         ownerId: json["ownerId"],
-        ownername: json["ownername"],
+        ownerName: json["ownername"],
         ownerTelephone: json["ownerTelephone"],
         observations: json["observations"],
       );
@@ -47,8 +49,14 @@ class AsoUsuarios {
         "siteTarife": siteTarife,
         "farmName": farmName,
         "ownerId": ownerId,
-        "ownername": ownername,
+        "ownerName": ownerName,
         "ownerTelephone": ownerTelephone,
         "observations": observations,
       };
+
+  void iterarCampos() {
+    toJson().forEach((key, value) {
+      print('$key: $value');
+    });
+  }
 }

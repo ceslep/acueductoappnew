@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:acueductoapp/api/api.asou.dart';
 import 'package:acueductoapp/aso_usuarios_model.dart';
 import 'package:acueductoapp/location_form.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _HomeState extends State<Home> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 // Acceder al valor del farmNameController
                 final state = _locationFormKey.currentState!;
@@ -41,7 +42,7 @@ class _HomeState extends State<Home> {
                 asousuario.ownerName = state.ownerNameController.text;
                 asousuario.ownerTelephone = state.ownerTelephoneController.text;
                 asousuario.observations = state.observationsController.text;
-                asousuario.iterarCampos();
+                await guardarUsuario(asousuario);
               }
             },
             icon: const Icon(

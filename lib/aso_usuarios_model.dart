@@ -38,7 +38,7 @@ class AsoUsuarios {
         siteTarife: json["siteTarife"],
         farmName: json["farmName"],
         ownerId: json["ownerId"],
-        ownerName: json["ownername"],
+        ownerName: json["ownerName"],
         ownerTelephone: json["ownerTelephone"],
         observations: json["observations"],
       );

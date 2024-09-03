@@ -1,9 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'dart:collection';
-
 import 'package:acueductoapp/api/api.asou.dart';
 import 'package:acueductoapp/aso_usuarios_model.dart';
+import 'package:acueductoapp/listado_usuarios.dart';
 import 'package:acueductoapp/location_form.dart';
 import 'package:acueductoapp/map_view.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool cargandoUsuarios = false;
+  bool cargandoUsuariosMapa = false;
   AsoUsuarios asousuario = AsoUsuarios();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<LocationFormState> _locationFormKey =
@@ -32,15 +33,83 @@ class _HomeState extends State<Home> {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const VerMap()),
-              );
-            },
-            icon: const Icon(Icons.map),
-          ),
+          !cargandoUsuarios
+              ? IconButton(
+                  onPressed: () async {
+                    setState(() {
+                      cargandoUsuarios = true;
+                    });
+                    List<AsoUsuarios>? asoUsuarios = await getUsuarios();
+                    setState(() {
+                      cargandoUsuarios = false;
+                    });
+                    if (mounted) {
+                      // Verifica si el widget sigue montado
+                      Navigator.push(
+                        // ignore: use_build_context_synchronously
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ListadoUsuarios(
+                            asoUsuarios: asoUsuarios!,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.list_alt,
+                    color: Colors.white,
+                  ),
+                )
+              : const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 1,
+                    ),
+                  ),
+                ),
+          !cargandoUsuariosMapa
+              ? IconButton(
+                  onPressed: () async {
+                    setState(() {
+                      cargandoUsuariosMapa = true;
+                    });
+                    List<AsoUsuarios>? asoUsuarios = await getUsuarios();
+                    setState(() {
+                      cargandoUsuariosMapa = false;
+                    });
+                    if (mounted) {
+                      // Verifica si el widget sigue montado
+                      Navigator.push(
+                        // ignore: use_build_context_synchronously
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VerMap(
+                                  asoUsuarios: asoUsuarios!,
+                                )),
+                      );
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.map,
+                    color: Colors.white,
+                  ),
+                )
+              : const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 1,
+                    ),
+                  ),
+                ),
           IconButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {

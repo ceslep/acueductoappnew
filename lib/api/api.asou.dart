@@ -25,3 +25,26 @@ Future<void> guardarUsuario(AsoUsuarios usuario) async {
     print("ha ocurrido un error");
   }
 }
+
+Future<List<AsoUsuarios>?> getUsuarios({String criterio = ''}) async {
+  final Uri endPoint = Uri.parse('${url}getUsauriosUAC.php');
+  late final http.Response response;
+  final String bodyData = json.encode({"criterio": criterio});
+  try {
+    response = criterio == ''
+        ? await http.get(endPoint)
+        : await http.post(endPoint, body: bodyData);
+    if (response.statusCode == 200) {
+      List<dynamic> datosUsuarios = json.decode(response.body);
+      List<AsoUsuarios> result =
+          datosUsuarios.map((p) => AsoUsuarios.fromJson(p)).toList();
+      return result;
+    } else {
+      throw Exception('Error en la solicitud HTTP: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error al obtener el listado: $e');
+
+    return [];
+  }
+}

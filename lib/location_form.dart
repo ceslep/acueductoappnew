@@ -13,6 +13,7 @@ class LocationForm extends StatefulWidget {
 }
 
 class LocationFormState extends State<LocationForm> {
+  bool obteniendoCoordenadas = false;
   final TextEditingController _coordinatesController = TextEditingController();
   final TextEditingController _farmNameController = TextEditingController();
   final TextEditingController _ownerIdController = TextEditingController();
@@ -85,11 +86,35 @@ class LocationFormState extends State<LocationForm> {
               const SizedBox(height: 10),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    print('8');
-                    _getCurrentLocation();
+                  onPressed: () async {
+                    setState(() {
+                      obteniendoCoordenadas = true;
+                    });
+                    await _getCurrentLocation();
+                    setState(() {
+                      obteniendoCoordenadas = false;
+                    });
                   },
-                  child: const Text('Obtener Coordenadas'),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Obtener Coordenadas'),
+                      obteniendoCoordenadas
+                          ? const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 25,
+                                height: 25,
+                                child: CircularProgressIndicator(
+                                  color: Colors.purple,
+                                  strokeWidth: 1,
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 10),

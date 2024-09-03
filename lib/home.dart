@@ -1,8 +1,11 @@
 // ignore_for_file: avoid_print
 
+import 'dart:collection';
+
 import 'package:acueductoapp/api/api.asou.dart';
 import 'package:acueductoapp/aso_usuarios_model.dart';
 import 'package:acueductoapp/location_form.dart';
+import 'package:acueductoapp/map_view.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -29,6 +32,15 @@ class _HomeState extends State<Home> {
           ),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const VerMap()),
+              );
+            },
+            icon: const Icon(Icons.map),
+          ),
           IconButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {

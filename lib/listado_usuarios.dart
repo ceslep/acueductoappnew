@@ -10,6 +10,14 @@ class ListadoUsuarios extends StatefulWidget {
 }
 
 class _ListadoUsuariosState extends State<ListadoUsuarios> {
+  List<AsoUsuarios> _asoUsuarios = [];
+  @override
+  void initState() {
+    super.initState();
+    widget.asoUsuarios.sort(((a, b) => a.ownerName!.compareTo(b.ownerName!)));
+    _asoUsuarios = widget.asoUsuarios;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +31,7 @@ class _ListadoUsuariosState extends State<ListadoUsuarios> {
         ),
       ),
       body: ListView.builder(
-        itemCount: widget.asoUsuarios.length,
+        itemCount: _asoUsuarios.length,
         itemBuilder: (context, index) {
           // Verifica si la lista no es nula o está vacía
           if (widget.asoUsuarios.isEmpty) {
@@ -33,20 +41,31 @@ class _ListadoUsuariosState extends State<ListadoUsuarios> {
           }
 
           // Obtiene el nombre de la finca o usa un valor predeterminado si es nulo
-          final String tipoSitio =
-              widget.asoUsuarios[index].siteType ?? 'Sin nombre';
-          final String nombre =
-              widget.asoUsuarios[index].ownerName ?? 'Sin nombre';
+          final String tipoSitio = _asoUsuarios[index].siteType ?? 'Sin nombre';
+          final String nombre = _asoUsuarios[index].ownerName ?? 'Sin nombre';
 
           final String tipoTarifa =
-              widget.asoUsuarios[index].siteTarife ?? 'Sin nombre';
+              _asoUsuarios[index].siteTarife ?? 'Sin nombre';
 
           final String identificacion =
-              widget.asoUsuarios[index].ownerId ?? 'Sin nombre';
+              _asoUsuarios[index].ownerId ?? 'Sin nombre';
+
+          final String numeroPersonas =
+              _asoUsuarios[index].numberPersons ?? 'Sin nombre';
 
           return Card(
             child: ListTile(
-              title: Text('Usuario: $nombre'),
+              leading: Text((index + 1).toString()),
+              trailing: IconButton(
+                onPressed: () {},
+                icon:
+                    const Icon(Icons.map_sharp, color: Colors.deepOrangeAccent),
+              ),
+              title: Text(
+                'Usuario: $nombre',
+                style: const TextStyle(
+                    color: Colors.deepPurple, fontWeight: FontWeight.bold),
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -64,6 +83,12 @@ class _ListadoUsuariosState extends State<ListadoUsuarios> {
                     'Identificación: $identificacion',
                     style: const TextStyle(
                         color: Colors.blueGrey, fontStyle: FontStyle.italic),
+                  ),
+                  Text(
+                    'Número de Personas: $numeroPersonas',
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 22, 116, 3),
+                        fontStyle: FontStyle.italic),
                   ),
                 ],
               ),

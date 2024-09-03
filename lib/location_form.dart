@@ -1,5 +1,9 @@
 // ignore_for_file: avoid_print
 
+import 'package:acueductoapp/alert_faltan.dart';
+import 'package:acueductoapp/alert_guardado.dart';
+import 'package:acueductoapp/api/api.asou.dart';
+import 'package:acueductoapp/aso_usuarios_model.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -18,12 +22,14 @@ class LocationFormState extends State<LocationForm> {
   final TextEditingController _farmNameController = TextEditingController();
   final TextEditingController _ownerIdController = TextEditingController();
   final TextEditingController _ownerNameController = TextEditingController();
+  final TextEditingController _numberPersonsController =
+      TextEditingController();
   final TextEditingController _ownerTelephoneController =
       TextEditingController();
   final TextEditingController _observationsController = TextEditingController();
   String coordinates = '';
-  String _siteType = '';
-  String _siteTarife = '';
+  String siteType = '';
+  String siteTarife = '';
   String _farmName = '';
   String _ownerId = '';
   String _ownerName = '';
@@ -31,11 +37,11 @@ class LocationFormState extends State<LocationForm> {
   String _observations = '';
 
   TextEditingController get coordinatesController => _coordinatesController;
-  String get siteType => _siteType;
-  String get siteTarife => _siteTarife;
+
   TextEditingController get farmNameController => _farmNameController;
   TextEditingController get ownerIdController => _ownerIdController;
   TextEditingController get ownerNameController => _ownerNameController;
+  TextEditingController get numberPersonsController => _numberPersonsController;
   TextEditingController get ownerTelephoneController =>
       _ownerTelephoneController;
   TextEditingController get observationsController => _observationsController;
@@ -86,6 +92,11 @@ class LocationFormState extends State<LocationForm> {
               const SizedBox(height: 10),
               Center(
                 child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(Colors.purple),
+                    foregroundColor:
+                        WidgetStateProperty.all(Colors.yellowAccent),
+                  ),
                   onPressed: () async {
                     setState(() {
                       obteniendoCoordenadas = true;
@@ -107,7 +118,7 @@ class LocationFormState extends State<LocationForm> {
                                 width: 25,
                                 height: 25,
                                 child: CircularProgressIndicator(
-                                  color: Colors.purple,
+                                  color: Color.fromARGB(255, 239, 216, 243),
                                   strokeWidth: 1,
                                 ),
                               ),
@@ -119,7 +130,7 @@ class LocationFormState extends State<LocationForm> {
               ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
-                value: _siteType,
+                value: siteType,
                 items: const [
                   DropdownMenuItem(
                     value: '',
@@ -140,14 +151,14 @@ class LocationFormState extends State<LocationForm> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _siteType = value!;
+                    siteType = value!;
                   });
                 },
                 decoration: const InputDecoration(labelText: 'Tipo de Sitio'),
               ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
-                value: _siteTarife,
+                value: siteTarife,
                 items: const [
                   DropdownMenuItem(
                     value: '',
@@ -168,15 +179,15 @@ class LocationFormState extends State<LocationForm> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _siteTarife = value!;
+                    siteTarife = value!;
                   });
                 },
                 decoration: const InputDecoration(labelText: 'Tipo de tarifa'),
               ),
               TextFormField(
                 controller: _farmNameController,
-                decoration:
-                    const InputDecoration(labelText: 'Nombre de la Finca'),
+                decoration: const InputDecoration(
+                    labelText: 'Nombre de la Finca o casa si lo tiene'),
                 onChanged: (value) {
                   _farmName = value;
                 },
@@ -200,6 +211,16 @@ class LocationFormState extends State<LocationForm> {
                 },
               ),
               TextFormField(
+                keyboardType: const TextInputType.numberWithOptions(
+                    signed: false, decimal: false),
+                controller: _numberPersonsController,
+                decoration:
+                    const InputDecoration(labelText: 'Número de Personas'),
+                onChanged: (value) {
+                  _ownerName = value;
+                },
+              ),
+              TextFormField(
                 controller: _ownerTelephoneController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
@@ -215,21 +236,54 @@ class LocationFormState extends State<LocationForm> {
                 },
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (widget.formKey.currentState!.validate()) {
-                    // Aquí puedes manejar la lógica para guardar el formulario
-                    print('Formulario guardado');
-                    print('Coordenadas: $coordinates');
-                    print('Tipo de Sitio: $_siteType');
-                    print('Nombre de la Finca: $_farmName');
-                    print('Identificación del Propietario: $_ownerId');
-                    print('Nombre del Propietario: $_ownerName');
-                    print('Nombre del Propietario: $_ownerTelephone');
-                    print('Observaciones: $_observations');
-                  }
-                },
-                child: const Text('Guardar Formulario'),
+              Center(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(Colors.blue),
+                    foregroundColor: WidgetStateProperty.all(Colors.white),
+                  ),
+                  onPressed: () async {
+                    if (widget.formKey.currentState!.validate()) {
+                      // Aquí puedes manejar la lógica para guardar el formulario
+                      print('Formulario guardado');
+                      print('Coordenadas: $coordinates');
+                      print('Tipo de Sitio: $siteType');
+                      print('Nombre de la Finca: $_farmName');
+                      print('Identificación del Propietario: $_ownerId');
+                      print('Nombre del Propietario: $_ownerName');
+                      print('Nombre del Propietario: $_ownerTelephone');
+                      print('Observaciones: $_observations');
+                      AsoUsuarios asousuario = AsoUsuarios();
+                      asousuario.coordinates = coordinatesController.text;
+                      asousuario.siteType = siteType;
+                      asousuario.siteTarife = siteTarife;
+                      asousuario.farmName = farmNameController.text;
+                      asousuario.ownerId = ownerIdController.text;
+                      asousuario.ownerName = ownerNameController.text;
+                      asousuario.numberPersons = numberPersonsController.text;
+                      asousuario.ownerTelephone = ownerTelephoneController.text;
+                      asousuario.observations = observationsController.text;
+                      if (!asousuario.validarCampos()) {
+                        mostrarAlertaAlGuardar(context);
+                        return;
+                      }
+                      await guardarUsuario(asousuario);
+                      // ignore: use_build_context_synchronously
+                      mostrarAlerta(context);
+                      coordinatesController.text = '';
+                      siteType = '';
+                      farmNameController.text = '';
+                      _ownerIdController.text = '';
+                      _ownerNameController.text = '';
+                      _numberPersonsController.text = '';
+                      _ownerTelephoneController.text = '';
+                      siteTarife = '';
+                      observationsController.text = '';
+                      setState(() {});
+                    }
+                  },
+                  child: const Text('Guardar Formulario'),
+                ),
               ),
             ],
           ),

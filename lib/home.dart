@@ -1,5 +1,9 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
+import 'package:acueductoapp/alert_faltan.dart';
+import 'package:acueductoapp/alert_guardado.dart';
 import 'package:acueductoapp/api/api.asou.dart';
 import 'package:acueductoapp/aso_usuarios_model.dart';
 import 'package:acueductoapp/listado_usuarios.dart';
@@ -121,9 +125,25 @@ class _HomeState extends State<Home> {
                 asousuario.farmName = state.farmNameController.text;
                 asousuario.ownerId = state.ownerIdController.text;
                 asousuario.ownerName = state.ownerNameController.text;
+                asousuario.numberPersons = state.numberPersonsController.text;
                 asousuario.ownerTelephone = state.ownerTelephoneController.text;
                 asousuario.observations = state.observationsController.text;
+                if (!asousuario.validarCampos()) {
+                  mostrarAlertaAlGuardar(context);
+                  return;
+                }
                 await guardarUsuario(asousuario);
+                // ignore: use_build_context_synchronously
+                mostrarAlerta(context);
+                state.coordinatesController.text = '';
+                state.siteType = '';
+                state.siteTarife = '';
+                state.farmNameController.text = '';
+                state.ownerIdController.text = '';
+                state.ownerNameController.text = '';
+                state.numberPersonsController.text = '';
+                state.ownerTelephoneController.text = '';
+                state.observationsController.text = '';
               }
             },
             icon: const Icon(
@@ -132,7 +152,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              exit(0);
+            },
             icon: const Icon(
               Icons.exit_to_app,
               color: Colors.white,

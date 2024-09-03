@@ -18,6 +18,7 @@ class AsoUsuarios {
   String? farmName;
   String? ownerId;
   String? ownerName;
+  String? numberPersons;
   String? ownerTelephone;
   String? observations;
 
@@ -28,6 +29,7 @@ class AsoUsuarios {
     this.farmName,
     this.ownerId,
     this.ownerName,
+    this.numberPersons,
     this.ownerTelephone,
     this.observations,
   });
@@ -39,6 +41,7 @@ class AsoUsuarios {
         farmName: json["farmName"],
         ownerId: json["ownerId"],
         ownerName: json["ownerName"],
+        numberPersons: json["numberPersons"],
         ownerTelephone: json["ownerTelephone"],
         observations: json["observations"],
       );
@@ -50,6 +53,7 @@ class AsoUsuarios {
         "farmName": farmName,
         "ownerId": ownerId,
         "ownerName": ownerName,
+        "numberPersons": numberPersons,
         "ownerTelephone": ownerTelephone,
         "observations": observations,
       };
@@ -58,5 +62,32 @@ class AsoUsuarios {
     toJson().forEach((key, value) {
       print('$key: $value');
     });
+  }
+
+  bool validarCampos() {
+    return coordinates != null &&
+        coordinates!.isNotEmpty &&
+        coordinates!.length >= 5 &&
+        siteType != null &&
+        siteType!.isNotEmpty &&
+        siteTarife != null &&
+        siteTarife!.isNotEmpty &&
+        farmName != null &&
+        farmName!.isNotEmpty &&
+        farmName!.length >= 5 &&
+        ownerId != null &&
+        ownerId!.isNotEmpty &&
+        ownerId!.length >= 5 &&
+        ownerName != null &&
+        ownerName!.isNotEmpty &&
+        ownerName!.length >= 5 &&
+        numberPersons != null &&
+        numberPersons!.isNotEmpty &&
+        ownerTelephone != null &&
+        ownerTelephone!.isNotEmpty &&
+        ownerTelephone!.length >= 5 &&
+        observations != null &&
+        observations!.isNotEmpty &&
+        observations!.length >= 5;
   }
 }

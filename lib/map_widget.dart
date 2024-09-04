@@ -1,5 +1,6 @@
 import 'package:acueductoapp/aso_usuarios_model.dart';
 import 'package:acueductoapp/message_latlong.dart';
+import 'package:acueductoapp/random_color_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -72,24 +73,32 @@ class _MapWidgetState extends State<MapWidget> {
             point: c.coordinates,
             width: 80,
             height: 80,
-            child: IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return MessageBoxLatLong(
-                        latLong: c.coordinates, // Coordenadas de ejemplo
-                        info: c.info,
-                        info2: c.info2,
-                        info3: c.info3 // Información a mostrar
-                        );
-                  },
-                );
-              },
-              icon: const Icon(
-                Icons.place,
-                color: Colors.red,
-              ),
+            child: Column(
+              children: [
+                Text(
+                  textAlign: TextAlign.center,
+                  c.info,
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 8,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return MessageBoxLatLong(
+                              latLong: c.coordinates, // Coordenadas de ejemplo
+                              info: c.info,
+                              info2: c.info2,
+                              info3: c.info3 // Información a mostrar
+                              );
+                        },
+                      );
+                    },
+                    icon: const RandomColorIcon(size: 40)),
+              ],
             ),
           ),
         )

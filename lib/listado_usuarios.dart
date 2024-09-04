@@ -1,4 +1,5 @@
 import 'package:acueductoapp/aso_usuarios_model.dart';
+import 'package:acueductoapp/map_view_user.dart';
 import 'package:flutter/material.dart';
 
 class ListadoUsuarios extends StatefulWidget {
@@ -11,6 +12,7 @@ class ListadoUsuarios extends StatefulWidget {
 
 class _ListadoUsuariosState extends State<ListadoUsuarios> {
   List<AsoUsuarios> _asoUsuarios = [];
+  TextEditingController busquedaController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -31,8 +33,15 @@ class _ListadoUsuariosState extends State<ListadoUsuarios> {
         ),
       ),
       body: ListView.builder(
-        itemCount: _asoUsuarios.length,
+        itemCount: _asoUsuarios.length + 1,
         itemBuilder: (context, index) {
+          int indexx = index - 1;
+          String tipoSitio;
+          String nombre;
+          String tipoTarifa;
+          String identificacion;
+          String numeroPersonas;
+          AsoUsuarios asoUsuario;
           // Verifica si la lista no es nula o está vacía
           if (widget.asoUsuarios.isEmpty) {
             return const Center(
@@ -41,23 +50,68 @@ class _ListadoUsuariosState extends State<ListadoUsuarios> {
           }
 
           // Obtiene el nombre de la finca o usa un valor predeterminado si es nulo
-          final String tipoSitio = _asoUsuarios[index].siteType ?? 'Sin nombre';
-          final String nombre = _asoUsuarios[index].ownerName ?? 'Sin nombre';
+          if (index >= 1) {
+            tipoSitio = _asoUsuarios[indexx].siteType ?? 'Sin nombre';
+            nombre = _asoUsuarios[indexx].ownerName ?? 'Sin nombre';
 
-          final String tipoTarifa =
-              _asoUsuarios[index].siteTarife ?? 'Sin nombre';
+            tipoTarifa = _asoUsuarios[indexx].siteTarife ?? 'Sin nombre';
 
-          final String identificacion =
-              _asoUsuarios[index].ownerId ?? 'Sin nombre';
+            identificacion = _asoUsuarios[indexx].ownerId ?? 'Sin nombre';
 
-          final String numeroPersonas =
-              _asoUsuarios[index].numberPersons ?? 'Sin nombre';
+            numeroPersonas = _asoUsuarios[indexx].numberPersons ?? 'Sin nombre';
+
+            asoUsuario = _asoUsuarios[indexx];
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    _asoUsuarios = widget.asoUsuarios
+                        .where(
+                          (usuario) =>
+                              usuario.ownerName!.toLowerCase().contains(
+                                    value.toLowerCase(),
+                                  ) ||
+                              usuario.ownerId!
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase()),
+                        )
+                        .toList();
+                  });
+                },
+                controller: busquedaController,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: 'Buscar',
+                  hintText: 'Buscar Usuario',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      // Aquí puedes implementar la lógica para limpiar el campo de texto
+                      busquedaController.text = '';
+                      setState(() {
+                        _asoUsuarios = widget.asoUsuarios;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            );
+          }
 
           return Card(
             child: ListTile(
-              leading: Text((index + 1).toString()),
+              leading: Text((indexx + 1).toString()),
               trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewMapUser(asoUsuario: asoUsuario)),
+                  );
+                },
                 icon:
                     const Icon(Icons.map_sharp, color: Colors.deepOrangeAccent),
               ),

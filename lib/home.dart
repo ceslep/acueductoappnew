@@ -37,6 +37,28 @@ class _HomeState extends State<Home> {
           ),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                // Acceder al valor del farmNameController
+                final state = _locationFormKey.currentState!;
+
+                state.coordinatesController.text = '';
+                state.siteType = '';
+                state.siteTarife = '';
+                state.farmNameController.text = '';
+                state.ownerIdController.text = '';
+                state.ownerNameController.text = '';
+                state.numberPersons = '1';
+                state.ownerTelephoneController.text = '';
+                state.observationsController.text = '';
+              }
+            },
+            icon: const Icon(
+              Icons.new_label_outlined,
+              color: Colors.white,
+            ),
+          ),
           !cargandoUsuarios
               ? IconButton(
                   onPressed: () async {
@@ -125,7 +147,7 @@ class _HomeState extends State<Home> {
                 asousuario.farmName = state.farmNameController.text;
                 asousuario.ownerId = state.ownerIdController.text;
                 asousuario.ownerName = state.ownerNameController.text;
-                asousuario.numberPersons = state.numberPersonsController.text;
+                asousuario.numberPersons = state.numberPersons;
                 asousuario.ownerTelephone = state.ownerTelephoneController.text;
                 asousuario.observations = state.observationsController.text;
                 if (!asousuario.validarCampos()) {
@@ -141,7 +163,7 @@ class _HomeState extends State<Home> {
                 state.farmNameController.text = '';
                 state.ownerIdController.text = '';
                 state.ownerNameController.text = '';
-                state.numberPersonsController.text = '';
+                state.numberPersons = '1';
                 state.ownerTelephoneController.text = '';
                 state.observationsController.text = '';
               }

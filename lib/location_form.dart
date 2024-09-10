@@ -4,8 +4,10 @@ import 'package:acueductoapp/alert_faltan.dart';
 import 'package:acueductoapp/alert_guardado.dart';
 import 'package:acueductoapp/api/api.asou.dart';
 import 'package:acueductoapp/aso_usuarios_model.dart';
+import 'package:acueductoapp/number_persons.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:async';
 
 class LocationForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -17,19 +19,19 @@ class LocationForm extends StatefulWidget {
 }
 
 class LocationFormState extends State<LocationForm> {
+  Timer? _timer;
   bool obteniendoCoordenadas = false;
   final TextEditingController _coordinatesController = TextEditingController();
   final TextEditingController _farmNameController = TextEditingController();
   final TextEditingController _ownerIdController = TextEditingController();
   final TextEditingController _ownerNameController = TextEditingController();
-  final TextEditingController _numberPersonsController =
-      TextEditingController();
   final TextEditingController _ownerTelephoneController =
       TextEditingController();
   final TextEditingController _observationsController = TextEditingController();
   String coordinates = '';
   String siteType = '';
   String siteTarife = '';
+  String numberPersons = '';
   String _farmName = '';
   String _ownerId = '';
   String _ownerName = '';
@@ -41,7 +43,6 @@ class LocationFormState extends State<LocationForm> {
   TextEditingController get farmNameController => _farmNameController;
   TextEditingController get ownerIdController => _ownerIdController;
   TextEditingController get ownerNameController => _ownerNameController;
-  TextEditingController get numberPersonsController => _numberPersonsController;
   TextEditingController get ownerTelephoneController =>
       _ownerTelephoneController;
   TextEditingController get observationsController => _observationsController;
@@ -51,7 +52,6 @@ class LocationFormState extends State<LocationForm> {
   Future<void> _getCurrentLocation() async {
     // Verifica y solicita permisos de ubicación si es necesario
     LocationPermission permission = await Geolocator.checkPermission();
-    print(permission);
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
@@ -66,12 +66,36 @@ class LocationFormState extends State<LocationForm> {
     // Obtiene la ubicación actual
     Position position = await Geolocator.getCurrentPosition();
 
-    print(position);
-
     setState(() {
       _coordinatesController.text =
           "Lat.: ${position.latitude}, Long.: ${position.longitude}";
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(milliseconds: 3000), (timer) {
+      setState(() {});
+      if (mounted) {
+        _getCurrentLocation().then(
+          (value) {
+            setState(() {});
+          },
+        );
+        setState(() {
+          // Actualiza el estado o ejecuta alguna acción aquí
+          // Ejemplo: print('Timer ejecutado cada 500ms');
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancelamos el timer para evitar fugas de memoria
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -176,6 +200,10 @@ class LocationFormState extends State<LocationForm> {
                     value: '3',
                     child: Text('Tarifa 3'),
                   ),
+                  DropdownMenuItem(
+                    value: '4',
+                    child: Text('Otra'),
+                  ),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -210,16 +238,14 @@ class LocationFormState extends State<LocationForm> {
                   _ownerName = value;
                 },
               ),
-              TextFormField(
-                keyboardType: const TextInputType.numberWithOptions(
-                    signed: false, decimal: false),
-                controller: _numberPersonsController,
-                decoration:
-                    const InputDecoration(labelText: 'Número de Personas'),
-                onChanged: (value) {
-                  _ownerName = value;
+              const SizedBox(height: 10),
+              NumberPersonsWidget(
+                onNumberSelected: (value) {
+                  numberPersons = value;
+                  print(numberPersons);
                 },
               ),
+              const SizedBox(height: 10),
               TextFormField(
                 controller: _ownerTelephoneController,
                 keyboardType: TextInputType.phone,
@@ -228,6 +254,7 @@ class LocationFormState extends State<LocationForm> {
                   _ownerTelephone = value;
                 },
               ),
+              const SizedBox(height: 10),
               TextFormField(
                 controller: _observationsController,
                 decoration: const InputDecoration(labelText: 'Observaciones'),
@@ -260,7 +287,8 @@ class LocationFormState extends State<LocationForm> {
                       asousuario.farmName = farmNameController.text;
                       asousuario.ownerId = ownerIdController.text;
                       asousuario.ownerName = ownerNameController.text;
-                      asousuario.numberPersons = numberPersonsController.text;
+                      asousuario.numberPersons = numberPersons;
+                      asousuario.numberPersons = numberPersons;
                       asousuario.ownerTelephone = ownerTelephoneController.text;
                       asousuario.observations = observationsController.text;
                       if (!asousuario.validarCampos()) {
@@ -275,7 +303,7 @@ class LocationFormState extends State<LocationForm> {
                       farmNameController.text = '';
                       _ownerIdController.text = '';
                       _ownerNameController.text = '';
-                      _numberPersonsController.text = '';
+                      numberPersons = '1';
                       _ownerTelephoneController.text = '';
                       siteTarife = '';
                       observationsController.text = '';

@@ -20,6 +20,10 @@ class AsoUsuarios {
   String? ownerName;
   String? numberPersons;
   String? ownerTelephone;
+  String? pozo;
+  String? conditione;
+  String? farmArea;
+  String? lgbti;
   String? observations;
 
   AsoUsuarios({
@@ -31,6 +35,10 @@ class AsoUsuarios {
     this.ownerName,
     this.numberPersons,
     this.ownerTelephone,
+    this.pozo,
+    this.conditione,
+    this.farmArea,
+    this.lgbti,
     this.observations,
   });
 
@@ -43,6 +51,10 @@ class AsoUsuarios {
         ownerName: json["ownerName"],
         numberPersons: json["numberPersons"],
         ownerTelephone: json["ownerTelephone"],
+        pozo: json["pozo"],
+        conditione: json["condition"],
+        farmArea: json["farmArea"],
+        lgbti: json["lgbti"],
         observations: json["observations"],
       );
 
@@ -55,6 +67,10 @@ class AsoUsuarios {
         "ownerName": ownerName,
         "numberPersons": numberPersons,
         "ownerTelephone": ownerTelephone,
+        "pozo": pozo,
+        "conditione": conditione,
+        "farmArea": farmArea,
+        "lgbti": lgbti,
         "observations": observations,
       };
 
@@ -88,6 +104,18 @@ class AsoUsuarios {
         ownerTelephone!.length >= 5 &&
         observations != null &&
         observations!.isNotEmpty &&
-        observations!.length >= 5;
+        observations!.length >= 5 &&
+        pozo != null &&
+        pozo!.isNotEmpty &&
+        pozo!.length >= 5 &&
+        conditione != null &&
+        conditione!.isNotEmpty &&
+        conditione!.length >= 5 &&
+        farmArea != null &&
+        farmArea!.isNotEmpty &&
+        farmArea!.length >= 5 &&
+        lgbti != null &&
+        lgbti!.isNotEmpty &&
+        lgbti!.length >= 5;
   }
 }

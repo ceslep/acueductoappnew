@@ -27,16 +27,21 @@ class LocationFormState extends State<LocationForm> {
   final TextEditingController _ownerNameController = TextEditingController();
   final TextEditingController _ownerTelephoneController =
       TextEditingController();
+  final TextEditingController _farmAreaController = TextEditingController();
   final TextEditingController _observationsController = TextEditingController();
   String coordinates = '';
   String siteType = '';
   String siteTarife = '';
   String numberPersons = '';
-  String _farmName = '';
-  String _ownerId = '';
-  String _ownerName = '';
-  String _ownerTelephone = '';
-  String _observations = '';
+  String farmName = '';
+  String ownerId = '';
+  String ownerName = '';
+  String ownerTelephone = '';
+  String conditione = '';
+  String pozo = '';
+  String lgbti = '';
+  String farmArea = '';
+  String observations = '';
 
   TextEditingController get coordinatesController => _coordinatesController;
 
@@ -72,6 +77,34 @@ class LocationFormState extends State<LocationForm> {
     });
   }
 
+  final List<String> _optionsConditione = [
+    '',
+    'Indígena',
+    'Desplazado',
+    'Afrodescendiente',
+    'Mestizo',
+    'Rural',
+    'Urbano',
+    'Refugiado',
+    'Otro'
+  ];
+
+  final List<String> _opcionesPozo = ['', 'Si', 'No', 'En Construcción'];
+
+  final List<String> _opcionesLGBTI = [
+    '',
+    'Bisexual',
+    'Gay',
+    'Heterosexual',
+    'Lesbiana',
+    'No binario',
+    'Pansexual',
+    'Queer',
+    'Transgénero',
+    'Dos espíritus',
+    'Otro'
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -89,6 +122,8 @@ class LocationFormState extends State<LocationForm> {
         });
       }
     });
+    _optionsConditione.sort((a, b) => a.compareTo(b));
+    _opcionesLGBTI.sort((a, b) => a.compareTo(b));
   }
 
   @override
@@ -217,7 +252,7 @@ class LocationFormState extends State<LocationForm> {
                 decoration: const InputDecoration(
                     labelText: 'Nombre de la Finca o casa si lo tiene'),
                 onChanged: (value) {
-                  _farmName = value;
+                  farmName = value;
                 },
               ),
               TextFormField(
@@ -227,7 +262,7 @@ class LocationFormState extends State<LocationForm> {
                 decoration: const InputDecoration(
                     labelText: 'Identificación del Propietario'),
                 onChanged: (value) {
-                  _ownerId = value;
+                  ownerId = value;
                 },
               ),
               TextFormField(
@@ -235,7 +270,7 @@ class LocationFormState extends State<LocationForm> {
                 decoration:
                     const InputDecoration(labelText: 'Nombre del Propietario'),
                 onChanged: (value) {
-                  _ownerName = value;
+                  ownerName = value;
                 },
               ),
               const SizedBox(height: 10),
@@ -251,7 +286,65 @@ class LocationFormState extends State<LocationForm> {
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
                 onChanged: (value) {
-                  _ownerTelephone = value;
+                  ownerTelephone = value;
+                },
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: conditione,
+                items: _optionsConditione.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    conditione = newValue!;
+                  });
+                },
+                decoration: const InputDecoration(labelText: 'Condición'),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: pozo,
+                items: _opcionesPozo.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    pozo = newValue!;
+                  });
+                },
+                decoration: const InputDecoration(labelText: 'Pozo Pséptico'),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: pozo,
+                items: _opcionesLGBTI.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    lgbti = newValue!;
+                  });
+                },
+                decoration: const InputDecoration(
+                    labelText: 'Alguien Condición de Género'),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: _farmAreaController,
+                decoration: const InputDecoration(
+                    labelText: 'Area de la propiedad en m^2'),
+                onChanged: (value) {
+                  farmArea = value;
                 },
               ),
               const SizedBox(height: 10),
@@ -259,7 +352,7 @@ class LocationFormState extends State<LocationForm> {
                 controller: _observationsController,
                 decoration: const InputDecoration(labelText: 'Observaciones'),
                 onChanged: (value) {
-                  _observations = value;
+                  observations = value;
                 },
               ),
               const SizedBox(height: 20),
@@ -275,11 +368,15 @@ class LocationFormState extends State<LocationForm> {
                       print('Formulario guardado');
                       print('Coordenadas: $coordinates');
                       print('Tipo de Sitio: $siteType');
-                      print('Nombre de la Finca: $_farmName');
-                      print('Identificación del Propietario: $_ownerId');
-                      print('Nombre del Propietario: $_ownerName');
-                      print('Nombre del Propietario: $_ownerTelephone');
-                      print('Observaciones: $_observations');
+                      print('Nombre de la Finca: $farmName');
+                      print('Identificación del Propietario: $ownerId');
+                      print('Nombre del Propietario: $ownerName');
+                      print('Teléfono del Propietario: $ownerTelephone');
+                      print('Condición: $conditione');
+                      print('Pozo Pséptico: $pozo');
+                      print('LGBTI: $lgbti');
+
+                      print('Observaciones: $observations');
                       AsoUsuarios asousuario = AsoUsuarios();
                       asousuario.coordinates = coordinatesController.text;
                       asousuario.siteType = siteType;
@@ -288,8 +385,12 @@ class LocationFormState extends State<LocationForm> {
                       asousuario.ownerId = ownerIdController.text;
                       asousuario.ownerName = ownerNameController.text;
                       asousuario.numberPersons = numberPersons;
-                      asousuario.numberPersons = numberPersons;
+                      asousuario.conditione = conditione;
                       asousuario.ownerTelephone = ownerTelephoneController.text;
+                      asousuario.conditione = conditione;
+                      asousuario.pozo = pozo;
+                      asousuario.lgbti = lgbti;
+                      asousuario.farmArea = farmArea;
                       asousuario.observations = observationsController.text;
                       if (!asousuario.validarCampos()) {
                         mostrarAlertaAlGuardar(context);
@@ -306,6 +407,10 @@ class LocationFormState extends State<LocationForm> {
                       numberPersons = '1';
                       _ownerTelephoneController.text = '';
                       siteTarife = '';
+                      conditione = '';
+                      pozo = '';
+                      lgbti = '';
+                      _farmAreaController.text = '';
                       observationsController.text = '';
                       setState(() {});
                     }

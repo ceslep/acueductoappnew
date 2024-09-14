@@ -50,6 +50,7 @@ class LocationFormState extends State<LocationForm> {
   TextEditingController get ownerNameController => _ownerNameController;
   TextEditingController get ownerTelephoneController =>
       _ownerTelephoneController;
+  TextEditingController get farmAreaController => _farmAreaController;
   TextEditingController get observationsController => _observationsController;
 
   // Método para obtener las coordenadas
@@ -93,6 +94,7 @@ class LocationFormState extends State<LocationForm> {
 
   final List<String> _opcionesLGBTI = [
     '',
+    'No',
     'Bisexual',
     'Gay',
     'Heterosexual',
@@ -323,7 +325,7 @@ class LocationFormState extends State<LocationForm> {
               ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
-                value: pozo,
+                value: lgbti,
                 items: _opcionesLGBTI.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,

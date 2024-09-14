@@ -107,15 +107,15 @@ class AsoUsuarios {
         observations!.length >= 5 &&
         pozo != null &&
         pozo!.isNotEmpty &&
-        pozo!.length >= 5 &&
+        pozo!.length >= 2 &&
         conditione != null &&
         conditione!.isNotEmpty &&
         conditione!.length >= 5 &&
         farmArea != null &&
         farmArea!.isNotEmpty &&
-        farmArea!.length >= 5 &&
+        farmArea!.length >= 2 &&
         lgbti != null &&
         lgbti!.isNotEmpty &&
-        lgbti!.length >= 5;
+        lgbti!.length >= 2;
   }
 }

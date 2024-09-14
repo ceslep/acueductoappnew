@@ -51,6 +51,10 @@ class _HomeState extends State<Home> {
                 state.ownerNameController.text = '';
                 state.numberPersons = '1';
                 state.ownerTelephoneController.text = '';
+                state.conditione = '';
+                state.pozo = '';
+                state.lgbti = '';
+                state.farmAreaController.text = '';
                 state.observationsController.text = '';
               }
             },
@@ -149,6 +153,10 @@ class _HomeState extends State<Home> {
                 asousuario.ownerName = state.ownerNameController.text;
                 asousuario.numberPersons = state.numberPersons;
                 asousuario.ownerTelephone = state.ownerTelephoneController.text;
+                asousuario.conditione = state.conditione;
+                asousuario.pozo = state.pozo;
+                asousuario.lgbti = state.lgbti;
+                asousuario.farmArea = state.farmAreaController.text;
                 asousuario.observations = state.observationsController.text;
                 if (!asousuario.validarCampos()) {
                   mostrarAlertaAlGuardar(context);
@@ -165,6 +173,10 @@ class _HomeState extends State<Home> {
                 state.ownerNameController.text = '';
                 state.numberPersons = '1';
                 state.ownerTelephoneController.text = '';
+                state.conditione = '';
+                state.pozo = '';
+                state.lgbti = '';
+                state.farmAreaController.text = '';
                 state.observationsController.text = '';
               }
             },

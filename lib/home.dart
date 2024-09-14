@@ -75,7 +75,7 @@ class _HomeState extends State<Home> {
                     });
                     if (mounted) {
                       // Verifica si el widget sigue montado
-                      Navigator.push(
+                      final AsoUsuarios result = await Navigator.push(
                         // ignore: use_build_context_synchronously
                         context,
                         MaterialPageRoute(
@@ -84,6 +84,21 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       );
+                      final state = _locationFormKey.currentState!;
+                      state.coordinatesController.text = result.coordinates!;
+                      state.siteType = result.siteType!;
+                      state.siteTarife = result.siteTarife!;
+                      state.farmNameController.text = result.farmName!;
+                      state.ownerIdController.text = result.ownerId!;
+                      state.ownerNameController.text = result.ownerName!;
+                      state.numberPersons = result.numberPersons!;
+                      state.ownerTelephoneController.text =
+                          result.ownerTelephone!;
+                      state.conditione = result.conditione ?? '';
+                      state.pozo = result.pozo!;
+                      state.lgbti = result.lgbti!;
+                      state.farmAreaController.text = result.farmArea!;
+                      state.observationsController.text = result.observations!;
                     }
                   },
                   icon: const Icon(

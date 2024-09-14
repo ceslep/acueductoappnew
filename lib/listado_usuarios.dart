@@ -102,7 +102,19 @@ class _ListadoUsuariosState extends State<ListadoUsuarios> {
 
           return Card(
             child: ListTile(
-              leading: Text((indexx + 1).toString()),
+              leading: Column(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context, asoUsuario);
+                    },
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                ],
+              ),
               trailing: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -115,10 +127,20 @@ class _ListadoUsuariosState extends State<ListadoUsuarios> {
                 icon:
                     const Icon(Icons.map_sharp, color: Colors.deepOrangeAccent),
               ),
-              title: Text(
-                'Usuario: $nombre',
-                style: const TextStyle(
-                    color: Colors.deepPurple, fontWeight: FontWeight.bold),
+              title: Row(
+                children: [
+                  Text(
+                    '$index:',
+                    style: const TextStyle(
+                        color: Colors.deepPurple, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    nombre,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 71, 102, 21),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

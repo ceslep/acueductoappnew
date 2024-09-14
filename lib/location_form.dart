@@ -250,6 +250,8 @@ class LocationFormState extends State<LocationForm> {
                 decoration: const InputDecoration(labelText: 'Tipo de tarifa'),
               ),
               TextFormField(
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold),
                 controller: _farmNameController,
                 decoration: const InputDecoration(
                     labelText: 'Nombre de la Finca o casa si lo tiene'),
@@ -258,6 +260,8 @@ class LocationFormState extends State<LocationForm> {
                 },
               ),
               TextFormField(
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold),
                 controller: _ownerIdController,
                 keyboardType: const TextInputType.numberWithOptions(
                     signed: false, decimal: false),
@@ -268,6 +272,8 @@ class LocationFormState extends State<LocationForm> {
                 },
               ),
               TextFormField(
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold),
                 controller: _ownerNameController,
                 decoration:
                     const InputDecoration(labelText: 'Nombre del Propietario'),
@@ -284,6 +290,8 @@ class LocationFormState extends State<LocationForm> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold),
                 controller: _ownerTelephoneController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
@@ -297,7 +305,11 @@ class LocationFormState extends State<LocationForm> {
                 items: _optionsConditione.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value),
+                    child: Text(
+                      value,
+                      style: const TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold),
+                    ),
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
@@ -313,7 +325,11 @@ class LocationFormState extends State<LocationForm> {
                 items: _opcionesPozo.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value),
+                    child: Text(
+                      value,
+                      style: const TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold),
+                    ),
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
@@ -329,7 +345,11 @@ class LocationFormState extends State<LocationForm> {
                 items: _opcionesLGBTI.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value),
+                    child: Text(
+                      value,
+                      style: const TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold),
+                    ),
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
@@ -342,6 +362,8 @@ class LocationFormState extends State<LocationForm> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold),
                 controller: _farmAreaController,
                 decoration: const InputDecoration(
                     labelText: 'Area de la propiedad en m^2'),
@@ -351,6 +373,8 @@ class LocationFormState extends State<LocationForm> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold),
                 controller: _observationsController,
                 decoration: const InputDecoration(labelText: 'Observaciones'),
                 onChanged: (value) {
@@ -392,7 +416,7 @@ class LocationFormState extends State<LocationForm> {
                       asousuario.conditione = conditione;
                       asousuario.pozo = pozo;
                       asousuario.lgbti = lgbti;
-                      asousuario.farmArea = farmArea;
+                      asousuario.farmArea = farmAreaController.text;
                       asousuario.observations = observationsController.text;
                       if (!asousuario.validarCampos()) {
                         mostrarAlertaAlGuardar(context);

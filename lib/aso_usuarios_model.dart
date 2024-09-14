@@ -52,7 +52,7 @@ class AsoUsuarios {
         numberPersons: json["numberPersons"],
         ownerTelephone: json["ownerTelephone"],
         pozo: json["pozo"],
-        conditione: json["condition"],
+        conditione: json["conditione"],
         farmArea: json["farmArea"],
         lgbti: json["lgbti"],
         observations: json["observations"],
@@ -102,20 +102,13 @@ class AsoUsuarios {
         ownerTelephone != null &&
         ownerTelephone!.isNotEmpty &&
         ownerTelephone!.length >= 5 &&
-        observations != null &&
-        observations!.isNotEmpty &&
-        observations!.length >= 5 &&
         pozo != null &&
         pozo!.isNotEmpty &&
-        pozo!.length >= 2 &&
         conditione != null &&
         conditione!.isNotEmpty &&
-        conditione!.length >= 5 &&
         farmArea != null &&
         farmArea!.isNotEmpty &&
-        farmArea!.length >= 2 &&
         lgbti != null &&
-        lgbti!.isNotEmpty &&
-        lgbti!.length >= 2;
+        lgbti!.isNotEmpty;
   }
 }

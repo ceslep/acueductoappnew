@@ -15,7 +15,7 @@ class _MapViewState extends State<ViewMapUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 0, 22, 150),
+        backgroundColor: const Color.fromARGB(255, 122, 140, 243),
         title: const Text(
           'Mapa de Usuario',
           style: TextStyle(

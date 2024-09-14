@@ -33,7 +33,11 @@ class _NumberPersonsWidgetState extends State<NumberPersonsWidget> {
           items: numbers.map<DropdownMenuItem<String>>((int value) {
             return DropdownMenuItem<String>(
               value: (value).toString(), // Convertimos el valor a String
-              child: Text((value).toString()), // Mostramos el valor como String
+              child: Text(
+                (value).toString(),
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold),
+              ), // Mostramos el valor como String
             );
           }).toList(),
           decoration: const InputDecoration(labelText: 'Número de Personas'),
